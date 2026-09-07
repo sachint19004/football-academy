@@ -1,5 +1,7 @@
 from fastapi import FastAPI
 
+from app.database import db
+
 app = FastAPI(title="Football Academy API")
 
 
@@ -10,4 +12,8 @@ def root():
 
 @app.get("/health")
 def health():
-    return {"status": "healthy"}
+    try:
+        db.command("ping")
+        return {"status": "healthy", "database": "connected"}
+    except Exception:
+        return {"status": "unhealthy", "database": "disconnected"}
