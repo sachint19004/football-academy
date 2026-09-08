@@ -1,8 +1,10 @@
 from fastapi import FastAPI
 
-from app.database import db
+from app.routes.users import router as users_router
 
 app = FastAPI(title="Football Academy API")
+
+app.include_router(users_router)
 
 
 @app.get("/")
@@ -12,8 +14,4 @@ def root():
 
 @app.get("/health")
 def health():
-    try:
-        db.command("ping")
-        return {"status": "healthy", "database": "connected"}
-    except Exception:
-        return {"status": "unhealthy", "database": "disconnected"}
+    return {"status": "healthy"}
